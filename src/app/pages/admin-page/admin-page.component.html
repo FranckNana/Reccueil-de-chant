@@ -1,0 +1,374 @@
+<div class="area"></div>
+<nav class="main-menu">
+    <ul>
+        <li class="has-subnav">
+            <a routerLink="/admin" (click)="isLink(1)">
+               <i class="fa fa-list fa-2x"></i>
+                <span class="nav-text">
+                    Programme Ordinaire
+                </span>
+            </a>
+        </li>
+        <li class="has-subnav">
+            <a routerLink="/admin" (click)="isLink(2)">
+               <i class="fa fa-headphones fa-2x"></i>
+                <span class="nav-text">
+                    Audio
+                </span>
+            </a>
+        </li>
+        <li class="has-subnav" (click)="isLink(3)">
+            <a routerLink="/admin">
+               <i class="fa fa-music fa-2x"></i>
+                <span class="nav-text">
+                    Partitions
+                </span>
+            </a>
+        </li>
+        <li (click)="isLink(4)">
+            <a routerLink="/admin">
+               <i class="fa fa-info fa-2x"></i>
+                <span class="nav-text">
+                    Informations
+                </span>
+            </a>
+        </li>
+        <li class="has-subnav">
+            <a routerLink="/admin" (click)="isLink(5)">
+               <i class="fa fa-file fa-2x"></i>
+                <span class="nav-text">
+                    Programme Dimanche
+                </span>
+            </a>
+        </li>
+    </ul>
+</nav>
+
+<div class="container">
+    <div class="row" style="margin-left: 1cm; margin-top: 2cm;">
+
+        <!------------------------------ LISTE PROGRAMME ORDINAIRE-------------------------->
+        <mat-list role="list" *ngIf="progOrdin">
+            <button class="btn btn-success" type="button" style="float: right;" (click)="add()"> Nouveau </button>
+            <h1 style="color: beige;text-align: center;">Programme des chants</h1>
+            <hr>
+            <div *ngIf="isNewSong">
+                <form [formGroup]="songForm" (ngSubmit)="onSaveSong()">
+                    <div class="form-group">
+                      <label for="type" style="color: beige;">Type du chant</label>
+                      <select type="select" id="type" class="form-control" style="font-size: 20px;" formControlName="type">
+                            <option value="">--choisissez le type du chant--</option>
+                            <option valeur="entree">Entree</option>
+                            <option valeur="kyrie">Kyrie</option>
+                            <option valeur="gloria">Gloria</option>
+                            <option valeur="meditation">Meditation</option>
+                            <option valeur="acclamation">Acclamation</option>
+                            <option valeur="pu">Pu</option>
+                            <option valeur="offertoire">Offertoire</option>
+                            <option valeur="sanctus">Sanctus</option>
+                            <option valeur="anamnese">Anamnese</option>
+                            <option valeur="pater">Pater</option>
+                            <option valeur="communion">Communion</option>
+                            <option valeur="action-grace">AG</option>
+                            <option valeur="sortie">Sortie</option>
+                            <option valeur="autres">Autres</option>
+                      </select>
+                      <br>
+                      <label for="title" style="color: beige;">Titre</label>
+                      <input type="text" class="form-control" formControlName="title" style="font-size: 20px;"><br>
+                      <br>
+                    </div>
+                    <div class="form-group">
+                      <label for="refrain" style="color: beige;">Refrain</label>
+                      <textarea type="text" class="form-control" rows="4" style="font-size: 20px;" formControlName="refrain"></textarea>
+                    </div>
+                    <div formArrayName="couplet">
+                        <h3 style="color: beige;">Ajouter des Couplets</h3>
+                        <div class="form-group" *ngFor="let coupletControl of getCouplet().controls; let i = index">
+                          <input type="text" class="form-control" [formControlName]="i" style="font-size: 20px;" rows="2"><br>
+                        </div>
+                        <button type="button" class="btn btn-success" (click)="onAddCouplet()">Ajouter un couplet</button>
+                    </div>
+                    <br>
+                    <button class="btn btn-success" type="submit" [disabled]="songForm.invalid"> Enregistrer </button>
+                </form>
+            </div>
+
+            <div class="row" *ngIf="isUpdatingSong" style="margin-left: 0.5%;">
+
+                <form>
+                    <div class="form-group">
+
+                        <label for="type" style="color: beige;">Type du chant</label>
+                        <select type="select" id="type" class="form-control" style="font-size: 20px;"
+                                [(ngModel)]="songUpdated.type" [ngModelOptions]="{standalone: true}">
+                              <option value="">--choisissez le type du chant--</option>
+                              <option valeur="entree">Entree</option>
+                              <option valeur="kyrie">Kyrie</option>
+                              <option valeur="gloria">Gloria</option>
+                              <option valeur="meditation">Meditation</option>
+                              <option valeur="acclamation">Acclamation</option>
+                              <option valeur="pu">Pu</option>
+                              <option valeur="offertoire">Offertoire</option>
+                              <option valeur="sanctus">Sanctus</option>
+                              <option valeur="anamnèse">Anamnese</option>
+                              <option valeur="pater">Pater</option>
+                              <option valeur="communion">Communion</option>
+                              <option valeur="action-grace">AG</option>
+                              <option valeur="sortie">Sortie</option>
+                              <option valeur="autres">Autres</option>
+                        </select>
+                        <br>
+                        <label for="title" style="color: beige;">Titre</label>
+                        <input type="text" class="form-control" style="font-size: 20px;" 
+                                                                [(ngModel)]="songUpdated.title" [ngModelOptions]="{standalone: true}"><br>
+                        <br>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="refrain" style="color: beige;">Refrain</label>
+                        <textarea type="text" class="form-control" rows="4" style="font-size: 20px;" 
+                                              [(ngModel)]="songUpdated.refrain" [ngModelOptions]="{standalone: true}"></textarea>
+                    </div>
+                    
+                    <div class="form-group" *ngFor="let couplet of songUpdated.couplet; let i = index">
+                        <label for="content" style="color: beige;">Couplet {{i}}</label><br>
+                        <textarea type="text" rows="2" style="font-size: 20px; width: 100%;" 
+                                  (ngModelChange)="updateCouplet($event,i)" [ngModel]="couplet"
+                                  [ngModelOptions]="{standalone: true}">{{couplet}}</textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-success" style="margin-right: 0%;" (click)="sendModifySong()">
+                        Modifier
+                    </button>
+
+                </form>
+            </div>
+
+
+            <div class="row" *ngIf="nbSong>0">
+                <br><br><br>
+                <div>
+
+                    <select type="select" id="type" class="form-control" style="font-size: 15px; width: 210px; float: left;"
+                            [(ngModel)]="filterType" [ngModelOptions]="{standalone: true}">
+                                <option value="">--choisissez un type--</option>
+                                <option valeur="entree">Entree</option>
+                                <option valeur="kyrie">Kyrie</option>
+                                <option valeur="gloria">Gloria</option>
+                                <option valeur="meditation">Meditation</option>
+                                <option valeur="acclamation">Acclamation</option>
+                                <option valeur="pu">Pu</option>
+                                <option valeur="offertoire">Offertoire</option>
+                                <option valeur="sanctus">Sanctus</option>
+                                <option valeur="anamnèse">Anamnese</option>
+                                <option valeur="pater">Pater</option>
+                                <option valeur="communion">Communion</option>
+                                <option valeur="action-grace">AG</option>
+                                <option valeur="sortie">Sortie</option>
+                                <option valeur="autres">Autres</option>
+                    </select>
+
+                    <button type="submit" class="btn btn-success" style=" margin-right: 73%;" (click)="getType()">
+                        filtrer
+                    </button>
+
+                </div>
+                <br><br><br>
+
+                <h1 style="color: beige; margin-left: 3%; margin-right: auto;">
+                    <span style="float: left;">Liste</span> 
+                    <span style="float: right;">Total de chants enregistrés ({{nbSong}})</span>
+                </h1>
+                <br>
+                <hr>
+                <div *ngFor="let song of songs; let i = index" style="margin-left: 1.2%; margin-right: 1.2%;">
+                    <div class="col-md-8 col-sm-8 col-xs-8 col-lg-10">
+                        <h3 style="text-align: left; color: beige;">
+                            <span style="float: left;">{{song.type}}: </span> 
+                            <span style="float: right;">{{song.title.substring(0,17)}}</span>
+                        </h3>
+                    </div>
+                    
+                    <div class="col-md-2 col-sm-2 col-xs-2 col-lg-1">
+                        <button type="button" (click)="onDeleteSong(song)"
+                                style="width: 100%;background-color:transparent;margin-top: 3px;border:none;font-size: 15px;">
+                            <span class="glyphicon glyphicon-trash" style="color: beige;"></span>
+                        </button>
+                    </div>
+                    <div class="col-md-2 col-sm-2 col-xs-2 col-lg-1">
+                        <button type="button"
+                                style="width: 100%;background-color:transparent;margin-top: 3px;border:none;font-size: 15px;"
+                                (click)="onUpdateSong(song,i)">
+                            <span class="glyphicon glyphicon-edit" style="color: beige;"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+        </mat-list>
+
+
+        <!------------------------------ LISTE PROGRAMME Audio -------------------------->
+        <mat-list role="list" *ngIf="isAudio">
+            <h1 style="color: beige;text-align: center;">Audio</h1>
+            <hr>
+            <p style="color: beige;"> en cours de développement ....</p>
+        </mat-list>
+
+
+
+        <!------------------------------ LISTE DES PARTITIONS -------------------------->
+        <mat-list role="list" *ngIf="isPartition">
+            <h1 style="color: beige;text-align: center;">Partitions</h1>
+            <hr>
+            
+            <div class="form-group">
+                <input type="file" (change)="detectFiles($event,true)" class="form-control">
+                <p class="text-success" *ngIf="fileUploaded">Fichier chargé !</p> 
+            </div>
+            <button class="btn btn-success" [disabled]="!fileUploaded" (click)="onSaveFile(true)"
+                  type="submit" accept=".pdf">Upload
+            </button>
+            <p *ngIf="isDuplicate" style="color:rgb(245, 38, 38)">Ce fichier existe déjà !</p> 
+
+            <div class="row">
+                <br><br><br>
+                <h1 style="color: beige; margin-left: 1.2%; margin-right: 1.2%;" *ngIf="nbPartition > 0">Liste</h1>
+                <div *ngFor="let partition of partitionFiles; let i = index" style="margin-left: 1.2%; margin-right: 1.2%;">
+                    <hr>
+                    <div class="col-md-10 col-sm-10 col-xs-10 col-lg-10">
+                        <a href={{partition.url}} target="_blank">
+                            <button type="button" style="width: 100%;background-color:transparent;margin-top: 2px;">
+                                    <h2 style="color: beige;">
+                                        <span style="float: left;">{{partition.name.substring(13)}}</span>
+                                    </h2>
+                            </button>
+                        </a>
+                    </div>
+                    
+                    <div class="col-md-2 col-sm-2 col-xs-2 col-lg-2">
+                        <button type="button" (click)="onDeletePartition(partition)"
+                                style="width: 100%;background-color:transparent;margin-top: 15px;border:none;font-size: 15px;">
+                            <span class="glyphicon glyphicon-trash" style="color: beige;"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </mat-list>
+
+
+        <!------------------------------ LISTE DES INFORMATIONS -------------------------->
+        <mat-list role="list" *ngIf="isInfos">
+            <h1 style="color: beige;text-align: center;">Informations</h1>
+            <hr>
+            <form [formGroup]="infoForm" (ngSubmit)="onSubmitInfoForm()">
+                <div class="form-group">
+                  <label for="title" style="color: beige;">Titre</label>
+                  <input type="text" id="title" class="form-control" formControlName="title" style="font-size: 20px;"><br>
+                </div>
+                <div class="form-group">
+                  <label for="content" style="color: beige;">Information</label>
+                  <textarea type="text" id="content" class="form-control" formControlName="content" rows="5" style="font-size: 20px;"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" [disabled]="infoForm.invalid || isNbInfos">publier</button>
+            </form>
+            <hr>
+
+            <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6" style="margin-left: -3%;">
+
+                <div *ngFor="let info of infos; let i = index">
+
+                    <div class="col-md-10 col-sm-10 col-xs-10 col-lg-10">
+                        <button type="button" style="width: 100% ;background-color:transparent;margin-top: 2px;color: beige;">
+                          <h2 style="text-align: justify;">{{info.title}}</h2>
+                        </button>
+                    </div>
+                    
+                    <div class="col-md-1 col-sm-1 col-xs-1 col-lg-1">
+                        <button type="button" (click)="onDeleteInfo(info)"
+                                style="width: 100%;background-color:transparent;margin-top: 15px;border:none;font-size: 20px;">
+                            <span class="glyphicon glyphicon-trash" style="color: beige;"></span>
+                        </button>
+                    </div>
+                    <div class="col-md-1 col-sm-1 col-xs-1 col-lg-1">
+                        <button type="button" (click)="getInfoToUpdate(info)"
+                                style="width: 100%;background-color:transparent;margin-top: 15px;border:none;font-size: 20px;margin-bottom: 1cm;">
+                            <span class="glyphicon glyphicon-edit" style="color: beige;"></span>
+                        </button>
+                        <br>
+                    </div>
+                </div>
+                
+            </div>
+
+            <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6" style="border-left: 4px solid blanchedalmond; margin-left: 3%;">
+
+                <form>
+                    <div class="form-group">
+                      <label for="title" style="color: beige;">Titre</label>
+                      <input type="text" id="title" class="form-control" style="font-size: 20px;" [(ngModel)]="infToUpdate.title" [ngModelOptions]="{standalone: true}"><br>
+                    </div>
+                    <div class="form-group">
+                      <label for="content" style="color: beige;">Information</label>
+                      <textarea type="text" id="content" class="form-control" rows="3" [(ngModel)]="infToUpdate.content" [ngModelOptions]="{standalone: true}"
+                                style="font-size: 20px;"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success" style="float: left;" (click)="onUpdateInfo()">
+                        update
+                    </button>
+                </form>
+
+            </div>
+
+            <div>
+                <span class="glyphicon glyphicon-warning-sign" *ngIf="isNbInfos" style="color: rgb(248, 76, 76); font-size: medium;">
+                    Le nombre d'informations est limité 3. Veuillez supprimer d'abord au moins une information !
+                </span>
+            </div>
+
+        </mat-list>
+
+        <!------------------------------ PEUILLE DU DIMANCHE -------------------------->
+        <mat-list role="list" *ngIf="progDim">
+            <h1 style="color: beige;text-align: center;">Feuille de chant du dimacnhe</h1>
+            <hr>
+
+            <div class="form-group">
+                <label for="title" style="color: beige;">Ceci représente la date à laquelle est prévu ce programme</label>
+                <input type="date" class="form-control" [(ngModel)]="dateOfProgram" required><br>
+                <input type="file" (change)="detectFiles($event,false)" class="form-control">
+                <p class="text-success" *ngIf="fileUploaded">Fichier chargé !</p>
+            </div>
+            <button class="btn btn-success" [disabled]="!fileUploaded" (click)="onSaveFile(false)"
+                  type="submit" accept=".pdf">Upload
+            </button>
+
+            <div class="row">
+                <br><br><br>
+                <h1 style="color: beige; margin-left: 1.2%; margin-right: 1.2%;" *ngIf="nbFileDim > 0">Liste</h1>
+                <div *ngFor="let prog of programFiles; let i = index">
+                    <hr>
+                    <div class="col-md-10 col-sm-10 col-xs-10 col-lg-10">
+                        <a href={{prog.url}} target="_blank">
+                            <button type="button" style="width: 100%;background-color:transparent;margin-top: 2px;">
+                                    <h2 style="color: beige; font-size: 15px;"><span style="float: left;">Programme du</span> 
+                                                                <span style="float: right;">{{prog.date | date : 'dd/MM/yyyy'}}</span></h2>    
+                            </button>
+                        </a>    
+                    </div>
+                    
+                    <div class="col-md-2 col-sm-2 col-xs-2 col-lg-2">
+                        <button type="button" (click)="onDelete(prog)"
+                                style="width: 100%;background-color:transparent;margin-top: 15px;border:none;font-size: 15px;">
+                            <span class="glyphicon glyphicon-trash" style="color: beige;"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </mat-list>
+    </div>  
+</div>
+
+

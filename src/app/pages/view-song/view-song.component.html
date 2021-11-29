@@ -1,0 +1,16 @@
+<div class="container" style="margin-top: 18%;">
+  <div>
+    <h1 style="color: beige;text-align: center;" *ngIf="song.title!=''">{{song.title.substring(0,23)}} </h1><hr>  
+  </div>
+
+    <h3 style="color: beige;">Refrain : </h3>
+    <textarea type="text" rows="6" style="text-align: justify;background-color: rgb(0, 132, 255); width: 100%;
+                                          font-size: 25px;" class="coin">{{song.refrain}}</textarea>
+    
+    <div *ngFor="let couplet of song.couplet; let i = index">
+      <h4 style="color: beige; margin-bottom: 5px;">{{i+1}})</h4>
+      <textarea type="text" rows="3" readonly="readonly" style="font-size: 20px;text-align: justify;background-color: white; 
+                margin-top: -2.7%;padding-top: 2%; width: 100%; text-align: left;" class="arrondie2">{{couplet}}</textarea>
+    </div>
+
+</div>
