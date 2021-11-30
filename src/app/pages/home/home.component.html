@@ -2,24 +2,24 @@
     <div class="row" style="margin-top: 2cm;">
 
         <div class="col-md-6 col-sm-12 col-xs-12 col-lg-6"  style="text-align: left;" >
-            <img src="/assets/img/signin-img.jpg" style="width: 100%;" height="auto">
+            <img src="/assets/img/signin-img.jpg" style="width: 100%;" height="400">
         </div>
         
         <div class="col-md-6 col-sm-12 col-xs-12 col-lg-6"  style="text-align: center; margin-top: 10px;">
             <h1 style="color: beige;">Programme de la Messe</h1><hr>    
 
-            <embed [src]=myTrustUrl width=100% height=580 title="programme du dimanche" type='application/pdf' *ngIf="isProg"/>
+            <!--
+            <embed [src]=myTrustUrl width=100% height=320 title="programme du dimanche" type='application/pdf' *ngIf="isProg"/>
+            -->
+            <pdf-viewer [src]='myTrustUrl' 
+                        [render-text]="true" 
+                        style="display: block;">
+            </pdf-viewer>
 
             <button>
                 <a [href]=myTrustUrl>Télécharger le programme</a>
             </button>
 
-<!--
-
-            <object [data]=myTrustUrl type="application/pdf" width="100%" height="590" *ngIf="isProg">
-                <a [href]=myTrustUrl>test.pdf</a>
-            </object>
--->
         </div>
 
         <div class="col-md-6 col-sm-12 col-xs-12 col-lg-6"  style="text-align: center;margin-top: 3cm;" *ngIf="!isProg">
@@ -57,7 +57,16 @@
         </div>
 
         <div class="col-md-4 col-sm-12 col-xs-12 col-lg-4">
-            <img src="/assets/img/Stpierre.jpg" style="max-width: 100%; margin-top: 47px;" height="auto">
+            <div>
+                <img src="/assets/img/Stpierre.jpg" style="max-width: 100%; margin-top: 47px;" height="auto">
+            </div>
+            <br>
+            <div>
+                <p style="text-align: justify; color: beige;">
+                    « Je te donnerai les clés du royaume des Cieux : tout ce que tu auras lié sur la terre sera lié dans les cieux, 
+                    et tout ce que tu auras délié sur la terre sera délié dans les cieux. » Matthieu 16,19.
+                </p>
+            </div>
         </div>
     
     </div>

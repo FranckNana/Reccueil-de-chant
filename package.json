@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "deploy": "ng build --prod && firebase deploy"
   },
   "private": true,
   "dependencies": {
@@ -28,7 +29,8 @@
     "bootstrap": "^3.4.1",
     "firebase": "^8.9.1",
     "jquery": "^3.6.0",
-    "ng2-pdf-viewer": "^7.0.1",
+    "ng2-pdf-viewer": "^7.0.2",
+    "ngx-extended-pdf-viewer": "^11.0.0-alpha.9",
     "rxjs": "~6.6.0",
     "rxjs-compat": "^6.6.7",
     "tslib": "^2.2.0",
@@ -40,7 +42,7 @@
     "@angular/compiler-cli": "~13.0.0",
     "@types/jasmine": "~3.8.0",
     "@types/node": "^12.11.1",
-    "favicons-webpack-plugin": "^0.0.7",
+    "favicons-webpack-plugin": "^5.0.2",
     "jasmine-core": "~3.8.0",
     "karma": "~6.3.0",
     "karma-chrome-launcher": "~3.1.0",

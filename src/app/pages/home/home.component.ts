@@ -27,6 +27,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   isInfos: boolean = false;
 
   myTrustUrl:SafeUrl;
+  test:string;
 
   constructor(private fileService:FileService,
               private router: Router,
@@ -39,6 +40,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             this.programFiles = files;
             this.lastProgramFile  = this.programFiles[this.programFiles.length-1];
             this.myTrustUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.lastProgramFile?.url);
+            this.test = this.lastProgramFile?.url;
             if( this.programFiles.length===0){
               this.isProg=false;
             }else{

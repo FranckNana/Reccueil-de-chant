@@ -13,7 +13,14 @@
                         <input type="submit" value="Login" [disabled]="signInForm.invalid">
                     </form>
                 </div>
-                <p class="text-danger">{{ errorMessage }}</p>
+            </div>
+
+            <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12" *ngIf="isErr && !isAuth">
+                <div class="card">
+                    <div class="Custombox">
+                        <p style="font-size: 20px; color: rgb(201, 77, 77);">{{ errorMessage }}</p>
+                    </div>
+                </div>
             </div>
 
             <div class="col-md-push-1 col-sm-push-0 col-xs-pull-5 col-lg-6" *ngIf="isAuth">

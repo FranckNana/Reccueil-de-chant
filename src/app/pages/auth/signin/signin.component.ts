@@ -16,6 +16,7 @@ export class SigninComponent implements OnInit {
   errorMessage: string;
 
   isAuth: boolean;
+  isErr: boolean = false;
 
   constructor(private formBuilder: FormBuilder,
               private authService: AuthService,
@@ -52,8 +53,9 @@ export class SigninComponent implements OnInit {
         this.router.navigate(['auth/signin']);
       },
       (error) => {
+        this.isErr = true;
         this.errorMessage = error;
-        alert(error);
+        //alert(error);
       }
     );
   }

@@ -93,3 +93,14 @@ body
 .forgot {
     text-decoration: underline
 }
+
+.Custombox {
+    width: auto ;
+    padding: 40px;
+    position: relative;
+    top: 50%;
+    background: #191919;
+    text-align: center;
+    transition: 0.15s;
+    margin-top: 100px;
+}
