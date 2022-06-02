@@ -32,9 +32,6 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              "src/assets/img/signin-img.jpg",
-              "src/assets/img/Stpierre.jpg",
-              "src/assets/img/couverture_hymne.jpg",
               "src/manifest.webmanifest"
             ],
             "styles": [

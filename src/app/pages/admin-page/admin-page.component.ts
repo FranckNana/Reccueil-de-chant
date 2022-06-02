@@ -9,6 +9,8 @@ import { Infos } from '../models/infos.model';
 import { SongService } from 'src/app/services/songService/song.service';
 import { Song } from '../models/chant.model';
 import { InfoService } from 'src/app/services/infoService/infos.service';
+import { AuthService } from 'src/app/services/authService/auth.service';
+import firebase from 'firebase/';
 
 @Component({
   selector: 'app-admin-page',
@@ -67,13 +69,28 @@ export class AdminPageComponent implements OnInit, OnDestroy {
   filterType : String = "";
   isFiltre : boolean = false;
 
+  isAuth: boolean;
+  isSong: boolean = false;
+
   constructor(private fileService:FileService,
               private infoService:InfoService,
               private songService: SongService,
               private router: Router,
+              private authService: AuthService,
               private formBuilder: FormBuilder) {}
 
   ngOnInit(){
+
+    firebase.auth().onAuthStateChanged(
+      (user) => {
+        if(user) {
+          this.isAuth = true;
+        } else {
+          this.isAuth = false;
+        }
+      }
+    );
+
     this.programFilesSubcription = this.fileService.programFilesSubject.subscribe(
       (files:any[])=>{
         this.programFiles = files;
@@ -114,6 +131,11 @@ export class AdminPageComponent implements OnInit, OnDestroy {
 
   }
 
+  onSignOut(){
+    this.authService.signOutUser();
+    this.isAuth = false;
+  }
+
 
   detectFiles(event:any,isPartition:boolean) {
     this.isDuplicate = false;
@@ -151,26 +173,20 @@ export class AdminPageComponent implements OnInit, OnDestroy {
       }
     }
 
-      if(!this.isDuplicate){
-        if(isPartition){
-          this.partitionFile.date=new Date().toString();
-          this.partitionFile.url = this.fileUrl;
-          this.fileService.createNewProgramFile(this.programFileToSave,this.partitionFile,true);
-          this.router.navigate(['AdminPageComponent']);
-        }else{
-          this.programFileToSave.url = this.fileUrl;
-          if(this.dateOfProgram.length!=0){
-            this.programFileToSave.date = this.dateOfProgram;
-          }
-          this.fileService.createNewProgramFile(this.programFileToSave,this.partitionFile,false);
-          this.router.navigate(['home']);
+    if(!this.isDuplicate){
+      if(isPartition){
+        this.partitionFile.date=new Date().toString();
+        this.partitionFile.url = this.fileUrl;
+        this.fileService.createNewProgramFile(this.programFileToSave,this.partitionFile,true);
+      }else{
+        this.programFileToSave.url = this.fileUrl;
+        if(this.dateOfProgram.length!=0){
+          this.programFileToSave.date = this.dateOfProgram;
         }
+        this.fileService.createNewProgramFile(this.programFileToSave,this.partitionFile,false);
       }
+    }
 
-  }
-
-  add(){
-    this.isNewSong = !this.isNewSong;
   }
 
   getInfoToUpdate(info:Infos){
@@ -194,7 +210,7 @@ export class AdminPageComponent implements OnInit, OnDestroy {
     const formValue = this.infoForm.value;
     const newInfo = new Infos( formValue['title'], formValue['content']);
     this.infoService.createNewInfos(newInfo);
-    this.router.navigate(['home']);
+    this.initInfoForm();
   }
 
   initSongForm(){
@@ -251,7 +267,8 @@ export class AdminPageComponent implements OnInit, OnDestroy {
                              formValue['couplet'] ? formValue['couplet'] : []
                             );
     this.songService.addNewSong(newSong);
-    this.router.navigate(['home']);
+    this.initSongForm();
+    
   }
 
 
@@ -272,7 +289,7 @@ export class AdminPageComponent implements OnInit, OnDestroy {
       }
     }
     this.songService.updateSong(this.songUpdated,this.songIDToModify);
-    this.router.navigate(['home']);
+    this.isUpdatingSong = false;
   }
 
   onDeleteSong(song:Song){
@@ -291,36 +308,29 @@ export class AdminPageComponent implements OnInit, OnDestroy {
     this.infoService.removeInfo(info);
   }
 
+  initFalse(){
+    this.progOrdin=false;
+    this.isAudio=false;
+    this.isPartition = false;
+    this.isInfos = false;
+    this.progDim = false;
+  }
+
   isLink(link:number){
     if(link===1){
+      this.initFalse();
       this.progOrdin=true;
-      this.isAudio=false;
-      this.isPartition = false;
-      this.isInfos = false;
-      this.progDim = false;
     }else if(link===2){
-      this.progOrdin=false;
+      this.initFalse();
       this.isAudio=true;
-      this.isPartition = false;
-      this.isInfos = false;
-      this.progDim = false;
     }else if(link===3){
-      this.progOrdin=false;
-      this.isAudio=false;
+      this.initFalse();
       this.isPartition = true;
-      this.isInfos = false;
-      this.progDim = false;
     }else if(link===4){
-      this.progOrdin=false;
-      this.isAudio=false;
-      this.isPartition = false;
+      this.initFalse();
       this.isInfos = true;
-      this.progDim = false;
     }else if(link===5){
-      this.progOrdin=false;
-      this.isAudio=false;
-      this.isPartition = false;
-      this.isInfos = false;
+      this.initFalse();
       this.progDim = true;
     }
   }
@@ -340,6 +350,25 @@ export class AdminPageComponent implements OnInit, OnDestroy {
     }if(this.songSubscription){
       this.songSubscription.unsubscribe();
     }
+  }
+
+  afficher(){
+    this.isSong = true;
+  }
+
+  cacher(){
+    this.isSong = false;
+  }
+
+  add(){
+    this.isNewSong = !this.isNewSong;
+  }
+  cancel(){
+    this.isNewSong = false;
+  }
+
+  cancelModif(){
+    this.isUpdatingSong = false;
   }
 
 

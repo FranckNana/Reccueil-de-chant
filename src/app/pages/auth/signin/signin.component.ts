@@ -8,6 +8,7 @@ import firebase from 'firebase/';
   selector: 'app-signin',
   templateUrl: './signin.component.html',
   styleUrls: ['./signin.component.scss'],
+  
   encapsulation: ViewEncapsulation.None
 })
 export class SigninComponent implements OnInit {
@@ -50,7 +51,12 @@ export class SigninComponent implements OnInit {
     
     this.authService.signInUser(email, password).then(
       () => {
-        this.router.navigate(['auth/signin']);
+        setTimeout(
+          () => {
+            this.router.navigate(['/admin']);
+          }, 2000
+        );
+        
       },
       (error) => {
         this.isErr = true;
