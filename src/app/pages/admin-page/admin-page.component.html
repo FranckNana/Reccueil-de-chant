@@ -140,7 +140,7 @@
                     </div>
                     
                     <div class="form-group" *ngFor="let couplet of songUpdated.couplet; let i = index">
-                        <label for="content" style="color: beige;">Couplet {{i}}</label><br>
+                        <label for="content" style="color: beige;">Couplet {{i+1}}</label><br>
                         <textarea type="text" rows="2" style="font-size: 20px; width: 100%;" 
                                   (ngModelChange)="updateCouplet($event,i)" [ngModel]="couplet"
                                   [ngModelOptions]="{standalone: true}">{{couplet}}</textarea>
