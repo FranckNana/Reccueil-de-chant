@@ -13,7 +13,7 @@ export class AppComponent {
     const firebaseConfig = {
       apiKey: "AIzaSyAoFNQmSaM9M01OLyPCXOtkP8NVGw7K7r0",
       authDomain: "song-app-admin.firebaseapp.com",
-      databaseURL: "https://song-app-admin.firebaseapp.com/",
+      databaseURL: "https://song-app-admin-default-rtdb.europe-west1.firebasedatabase.app",
       projectId: "song-app-admin",
       storageBucket: "song-app-admin.appspot.com",
       messagingSenderId: "437253215814",
