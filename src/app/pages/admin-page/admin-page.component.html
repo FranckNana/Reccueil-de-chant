@@ -45,11 +45,8 @@
 </nav>
 
 
-
-
-
 <div class="container">
-    <div class="row" style="margin-left: 1cm; margin-top: 2cm;">
+    <div class="row" style="margin-top: 10%;">
         
         <!------------------------------ LISTE PROGRAMME ORDINAIRE-------------------------->
         <mat-list role="list" *ngIf="progOrdin">
@@ -368,10 +365,10 @@
                   type="submit" accept=".pdf">Upload
             </button>
 
-            <div class="row">
+            <div class="row" *ngIf="nbFileDim > 0">
                 <br><br><br>
                 <mat-card>
-                    <h1 style="color: black; margin-left: 1.2%; margin-right: 1.2%;" *ngIf="nbFileDim > 0">Liste</h1>
+                    <h1 style="color: black; margin-left: 1.2%; margin-right: 1.2%;">Liste</h1>
                 </mat-card>
                 <div *ngFor="let prog of programFiles; let i = index">
                     <hr>
