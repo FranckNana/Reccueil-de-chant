@@ -46,7 +46,7 @@
 
 
 <div class="container">
-    <div class="row" style="margin-top: 10%;">
+    <div class="row" style="margin-top: 12%;">
         
         <!------------------------------ LISTE PROGRAMME ORDINAIRE-------------------------->
         <mat-list role="list" *ngIf="progOrdin">
@@ -224,7 +224,9 @@
 
         <!------------------------------ LISTE PROGRAMME Audio -------------------------->
         <mat-list role="list" *ngIf="isAudio">
-            <h1 style="color: beige;text-align: center;">Audio</h1>
+            <mat-card>
+                <h1 style="color: black;text-align: center;">Audio</h1>
+            </mat-card>
             <hr>
             <p style="color: beige;"> en cours de développement ....</p>
         </mat-list>
