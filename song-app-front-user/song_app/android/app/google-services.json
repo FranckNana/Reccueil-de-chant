@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "437253215814",
+    "firebase_url": "https://song-app-admin-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "song-app-admin",
+    "storage_bucket": "song-app-admin.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:437253215814:android:aa77fa00853292ce88dc47",
+        "android_client_info": {
+          "package_name": "com.frnana.song_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "437253215814-ua33e0nrc8pbfctog7hqiqv5kqehk4k1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC26k6MrIIQUBjJBwHueQV8HqW14kI_Pqg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "437253215814-ua33e0nrc8pbfctog7hqiqv5kqehk4k1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
