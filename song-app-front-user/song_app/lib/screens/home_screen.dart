@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:song_app/commons/card_view_screen.dart';
 import 'package:song_app/commons/menu_bottom.dart';
 
@@ -21,19 +22,28 @@ class HomeScreen extends StatelessWidget {
       'images/divers.jpg': '', 'images/programme.jpg': ''
     };
 
-    return Scaffold(
-        appBar: AppBar(
-          title: Text('Chants religieux'),
-        ),
-        body: Container(
-          child: ListView(
-            // ignore: prefer_const_literals_to_create_immutables
-            children: [
-              CardViewScreen(map: map)
-            ],
-          )
-        ),
-        bottomNavigationBar: MenuBottom(),
+    return WillPopScope(
+
+      onWillPop: () async { 
+        Get.off(HomeScreen());
+        return true;
+      },
+
+      child: Scaffold(
+          appBar: AppBar(
+            title: Text('Chants religieux'),
+            automaticallyImplyLeading: false,
+          ),
+          body: Container(
+            child: ListView(
+              // ignore: prefer_const_literals_to_create_immutables
+              children: [
+                CardViewScreen(map: map)
+              ],
+            )
+          ),
+          bottomNavigationBar: MenuBottom(),
+      ),
     );
   }
 }

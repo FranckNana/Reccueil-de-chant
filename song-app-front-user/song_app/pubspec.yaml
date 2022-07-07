@@ -30,7 +30,7 @@ dependencies:
   flutter:
     sdk: flutter
   convex_bottom_bar: ^3.0.0
-  get: ^4.6.1
+  get: ^4.6.5
   firebase_core: ^1.11.0
   firebase_storage: ^10.2.5
   firebase_analytics: ^9.0.5
