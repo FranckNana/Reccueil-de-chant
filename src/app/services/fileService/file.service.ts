@@ -42,11 +42,11 @@ export class FileService {
   }
   
   saveProgramFile() {
-    firebase.database().ref('/ProgramFiles').set(this.programFiles);
+    firebase.database().ref('/programFiles').set(this.programFiles);
   }
 
   savePartitionFile() {
-    firebase.database().ref('/PartitionsFiles').set(this.partitionFiles);
+    firebase.database().ref('/partitionsFiles').set(this.partitionFiles);
   }
 
   searchPartition(search:string){ 
@@ -86,7 +86,7 @@ export class FileService {
   }
 
   getProgramFiles() {
-    firebase.database().ref('/ProgramFiles')
+    firebase.database().ref('/programFiles')
     .on('value', (data) => {
         this.programFiles = data.val() ? data.val() : [];
         this.emitProgramFiles();
@@ -96,7 +96,7 @@ export class FileService {
   }
 
   getPartitionsFiles() {
-    firebase.database().ref('/PartitionsFiles')
+    firebase.database().ref('/partitionsFiles')
     .on('value', (data) => {
         this.partitionFiles = data.val() ? data.val() : [];
         this.emitPartitionFiles();
@@ -158,26 +158,44 @@ export class FileService {
     this.emitPartitionFiles();
   }
 
-  uploadFile(file: File) {
+  uploadFile(file: File, isPartition: boolean) {
     return new Promise(
       (resolve, reject) => {
         const almostUniqueFileName = Date.now().toString();
-        const upload = firebase.storage().ref()
-          .child('files/' + almostUniqueFileName+file.name).put(file);
-        upload.on(firebase.storage.TaskEvent.STATE_CHANGED,
-          () => {
-            console.log('Chargement…');
-          },
-          (error) => {
-            console.log('Erreur de chargement ! : ' + error);
-            reject();
-          },
-          () => {
-            this.fileName = almostUniqueFileName + file.name;
-            this.emitfileName();
-            resolve(upload.snapshot.ref.getDownloadURL());
-          }
-        );
+        if(isPartition){
+          const upload = firebase.storage().ref('files/partitions').child(almostUniqueFileName+file.name).put(file);
+          upload.on(firebase.storage.TaskEvent.STATE_CHANGED,
+            () => {
+              console.log('Chargement…');
+            },
+            (error) => {
+              console.log('Erreur de chargement ! : ' + error);
+              reject();
+            },
+            () => {
+              this.fileName = almostUniqueFileName + file.name;
+              this.emitfileName();
+              resolve(upload.snapshot.ref.getDownloadURL());
+            }
+          );
+        }else{
+          const upload = firebase.storage().ref('files/programmes').child(almostUniqueFileName+file.name).put(file);
+          upload.on(firebase.storage.TaskEvent.STATE_CHANGED,
+            () => {
+              console.log('Chargement…');
+            },
+            (error) => {
+              console.log('Erreur de chargement ! : ' + error);
+              reject();
+            },
+            () => {
+              this.fileName = almostUniqueFileName + file.name;
+              this.emitfileName();
+              resolve(upload.snapshot.ref.getDownloadURL());
+            }
+          );
+        }
+        
       }
     );
   }

@@ -144,7 +144,7 @@ export class AdminPageComponent implements OnInit, OnDestroy {
 
   onUploadFile(file: File,isPartition:boolean) {
     this.fileIsUploading = true;
-    this.fileService.uploadFile(file).then(
+    this.fileService.uploadFile(file, isPartition).then(
       (url: any) => {
         this.fileUrl = url;
         this.fileIsUploading = false;
