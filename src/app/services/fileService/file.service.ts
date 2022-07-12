@@ -161,7 +161,7 @@ export class FileService {
   uploadFile(file: File, isPartition: boolean) {
     return new Promise(
       (resolve, reject) => {
-        const almostUniqueFileName = Date.now().toString()+"/";
+        const almostUniqueFileName = Date.now().toString();
         if(isPartition){
           const upload = firebase.storage().ref('files/partitions').child(almostUniqueFileName+file.name).put(file);
           upload.on(firebase.storage.TaskEvent.STATE_CHANGED,
